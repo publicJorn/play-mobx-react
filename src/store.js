@@ -1,9 +1,13 @@
-import { decorate, observable, action } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 import { computedFn } from 'mobx-utils'
 
 import RequestModel, { STATES } from './requestModel'
 
 class RequestStore {
+  constructor() {
+    makeAutoObservable(this)
+  }
+
   requests = [
     new RequestModel({ name: 'first', state: STATES.INPROGRESS }),
     new RequestModel({ name: 'second', state: STATES.CREATED }),
@@ -19,11 +23,5 @@ class RequestStore {
     return this.requests.filter(({ state }) => state === filterState)
   })
 }
-
-decorate(RequestStore, {
-  requests: observable,
-  addRequest: action,
-  // requestsWithState: computed,
-})
 
 export default RequestStore
